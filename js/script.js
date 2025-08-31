@@ -49,6 +49,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Cookie Consent Banner ---
+    initCookieBanner();
+
+    // --- Footer Links ---
+    initFooterLinks();
+
+    // --- Job Form Submission ---
+    const jobForm = document.getElementById('jobPostForm');
+    if (jobForm) {
+        jobForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const msg = document.getElementById('jobSubmitMsg');
+            if (msg) msg.style.display = 'block';
+            jobForm.reset();
+        });
+    }
+
     // --- GSAP Scroll-Triggered Animations ---
     gsap.registerPlugin(ScrollTrigger);
 
@@ -101,6 +118,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+// Helper: Cookie banner
+function initCookieBanner(){
+    if(localStorage.getItem('cookiesAccepted')) return;
+    const banner=document.createElement('div');
+    banner.className='cookie-banner';
+    banner.innerHTML=`<p>We use cookies to enhance your experience. By continuing, you agree to our cookie policy.</p><button>Accept</button>`;
+    document.body.appendChild(banner);
+    banner.querySelector('button').addEventListener('click',()=>{
+        localStorage.setItem('cookiesAccepted','true');
+        banner.remove();
+    });
+}
+
+// Helper: Footer links
+function initFooterLinks(){
+    const footer=document.querySelector('footer');
+    if(!footer||footer.querySelector('.footer-links')) return;
+    const links=[
+        {t:'Ecosystem',h:'ecosystem.html'},
+        {t:'Careers',h:'careers.html'},
+        {t:'Post a Job',h:'post-job.html'},
+        {t:'Network Explorer',h:'explorer.html'},
+        {t:'FAQ',h:'faq.html'},
+        {t:'Delegation Program',h:'delegation.html'},
+        {t:'Mission Statement',h:'mission.html'},
+        {t:'Terms of Service',h:'terms.html'}
+    ];
+    const div=document.createElement('div');div.className='footer-links';
+    links.forEach(l=>{const a=document.createElement('a');a.href=l.h;a.textContent=l.t;div.appendChild(a);});
+    footer.prepend(div);
+}
 
 // --- Loading Animation Function ---
 function initLoadingAnimation() {

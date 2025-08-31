@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post a Job - Paxeer Network</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <header>
+        <div class="logo"><a href="index.html">PAXEER</a></div>
+        <nav>
+            <ul>
+                <li><a href="developers.html" data-hover>Developers</a></li>
+                <li><a href="ecosystem.html" data-hover>Ecosystem</a></li>
+                <li><a href="token.html" data-hover>Token</a></li>
+                <li><a href="docs.html" data-hover>Docs</a></li>
+                <li><a href="community.html" data-hover>Community</a></li>
+                <li><a href="about.html" data-hover>About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="post-job-hero">
+            <div class="hero-content anim-fade-in">
+                <h1>Post a <span class="accent-text">Job Opening</span></h1>
+                <p>Connect with top blockchain talent by listing your open positions on the Paxeer Ecosystem job board.</p>
+            </div>
+        </section>
+
+        <section id="job-form" class="cta-section anim-fade-in">
+            <div class="section-title">
+                <h2>Job Details</h2>
+                <p>Fill out the form below. Your listing will be reviewed by the Paxeer team before publication.</p>
+            </div>
+            <form id="jobPostForm" style="max-width:600px;margin:auto;display:grid;gap:1rem;">
+                <input type="text" name="company" placeholder="Company name" required>
+                <input type="text" name="role" placeholder="Job title" required>
+                <textarea name="description" placeholder="Short description" rows="5" required></textarea>
+                <input type="url" name="applyLink" placeholder="Application URL" required>
+                <input type="email" name="contact" placeholder="Contact email" required>
+                <button class="btn btn-primary" type="submit">Submit Listing</button>
+            </form>
+            <p id="jobSubmitMsg" style="display:none;margin-top:1rem;color:var(--color-primary);text-align:center;">Thank you! We will review your submission.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Paxeer Network. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
