@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Paxeer Network</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <header>
+        <div class="logo">
+            <a href="index.html">PAXEER</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="developers.html" data-hover>Developers</a></li>
+                <li><a href="ecosystem.html" data-hover>Ecosystem</a></li>
+                <li><a href="token.html" data-hover>Token</a></li>
+                <li><a href="docs.html" data-hover>Docs</a></li>
+                <li><a href="community.html" data-hover>Community</a></li>
+                <li><a href="about.html" data-hover>About</a></li>
+            </ul>
+        </nav>
+        <div class="header-button">
+            <button class="btn btn-primary" data-hover>Launch App</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Docs Hero Section -->
+        <section class="hero" id="docs-hero">
+            <div class="hero-content anim-fade-in">
+                <h1>PaxDex Protocol <br><span class="accent-text">Integration Guide.</span></h1>
+                <p>This comprehensive guide provides all necessary information for integrating with the PaxDex Protocol API and smart contracts.</p>
+            </div>
+        </section>
+
+        <section id="docs-content" class="anim-fade-in">
+            <h2 id="api-base-url">🌐 API Base URL</h2>
+            <p><strong>Production API:</strong> <code>https://dex-api.paxeer.app</code></p>
+            <p>All API endpoints should be prefixed with the base URL.</p>
+
+            <hr>
+
+            <h2 id="authentication">🔐 Authentication</h2>
+            <p>Currently, the API does not require authentication for read operations. All endpoints are publicly accessible.</p>
+
+            <hr>
+
+            <h2 id="rest-api-endpoints">📡 REST API Endpoints</h2>
+            <h3>1. Health Check</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/health</code></p>
+            <p><strong>Description:</strong> Check API health status</p>
+            <pre><code>{
+  "success": true,
+  "message": "PaxDex Engine is healthy",
+  "timestamp": 1693234567890,
+  "uptime": 12345.67,
+  "services": {
+    "priceService": true,
+    "oracleService": true,
+    "websocketService": true,
+    "cacheService": true,
+    "databaseService": true
+  }
+}</code></pre>
+            
+            <h3>2. Get All Token Prices</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/prices</code></p>
+            <p><strong>Description:</strong> Retrieve current prices for all supported tokens</p>
+            <pre><code>{
+  "success": true,
+  "data": {
+    "0x96465d06640aff1a00888d4b9217c9eae708c419": {
+      "address": "0x96465d06640aff1a00888d4b9217c9eae708c419",
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "decimals": 8,
+      "price": 45230.50,
+      "adjustedPrice": 45230500000000000,
+      "change24h": 2.45,
+      "lastUpdated": 1693234567,
+      "timestamp": 1693234567890
+    }
+  },
+  "count": 12,
+  "timestamp": 1693234567890,
+  "cached": false
+}</code></pre>
+
+            <h3>3. Get Single Token Price</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/prices/:address</code></p>
+            <p><strong>Parameters:</strong> <code>address</code> (string): Token contract address</p>
+            <pre><code>{
+  "success": true,
+  "data": {
+    "address": "0x96465d06640aff1a00888d4b9217c9eae708c419",
+    "symbol": "WBTC",
+    "name": "Wrapped Bitcoin",
+    "decimals": 8,
+    "price": 45230.50,
+    "adjustedPrice": 45230500000000000,
+    "change24h": 2.45,
+    "lastUpdated": 1693234567,
+    "timestamp": 1693234567890
+  },
+  "timestamp": 1693234567890
+}</code></pre>
+
+            <h3>4. Get Token Metadata</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/tokens</code></p>
+            <p><strong>Description:</strong> Retrieve metadata for all supported tokens</p>
+            <pre><code>{
+  "success": true,
+  "data": [
+    {
+      "address": "0x96465d06640aff1a00888d4b9217c9eae708c419",
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "decimals": 8,
+      "coinGeckoId": "wrapped-bitcoin"
+    }
+  ],
+  "count": 12,
+  "timestamp": 1693234567890
+}</code></pre>
+
+            <h3>5. Get Swap Token Data (Frontend Optimized)</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/tokens/swap</code></p>
+            <p><strong>Description:</strong> Get enhanced token data optimized for swap interfaces</p>
+            <pre><code>{
+  "success": true,
+  "data": [
+    {
+      "address": "0x96465d06640aff1a00888d4b9217c9eae708c419",
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "decimals": 8,
+      "price": 45230.50,
+      "marketCap": 890456000000,
+      "volume24h": 12345678900,
+      "priceChange24h": 2.45,
+      "image": "https://assets.coingecko.com/coins/images/7598/small/wrapped_bitcoin_wbtc.png",
+      "rank": 15
+    }
+  ],
+  "count": 12,
+  "timestamp": 1693234567890,
+  "cached": true
+}</code></pre>
+
+            <h3>6. Get Price History</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/prices/:address/history</code></p>
+            <p><strong>Query Parameters:</strong> <code>timeframe</code> ('1h', '24h', '7d', '30d'), <code>limit</code> (number)</p>
+            <pre><code>{
+  "success": true,
+  "data": [
+    {
+      "timestamp": 1693234567890,
+      "price": 45230.50,
+      "adjustedPrice": 45230500000000000
+    }
+  ],
+  "count": 100,
+  "timeframe": "24h",
+  "token": {
+    "address": "0x96465d06640aff1a00888d4b9217c9eae708c419",
+    "symbol": "WBTC",
+    "name": "Wrapped Bitcoin"
+  }
+}</code></pre>
+
+            <h3>7. Get System Status</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/status</code></p>
+            <p><strong>Description:</strong> Get detailed system status and metrics</p>
+            <pre><code>{
+  "success": true,
+  "data": {
+    "server": { "uptime": 12345.67, "memory": { "rss": 123456789, "heapTotal": 87654321, "heapUsed": 65432109 } },
+    "services": {
+      "priceService": { "status": "running", "lastUpdate": 1693234567890, "updateInterval": 30000 },
+      "oracleService": { "status": "connected", "contractAddress": "0x6e5da6d7a89c6B7cB0e5c64fcf326292F76A0352", "lastUpdate": 1693234567890 }
+    },
+    "database": { "status": "connected", "totalTokens": 12, "totalPriceRecords": 123456 }
+  }
+}</code></pre>
+
+            <hr>
+
+            <h2 id="websocket-connection">🔌 WebSocket Connection</h2>
+            <h3>Connection Details</h3>
+            <p><strong>WebSocket URL:</strong> <code>wss://dex-api.paxeer.app:3001</code></p>
+            <h3>Connection Example</h3>
+            <pre><code>const ws = new WebSocket('wss://dex-api.paxeer.app:3001');
+
+ws.onopen = function(event) {
+    console.log('Connected to PaxDex WebSocket');
+};
+
+ws.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log('Received update:', data);
+};
+
+ws.onclose = function(event) {
+    console.log('WebSocket connection closed');
+};
+
+ws.onerror = function(error) {
+    console.error('WebSocket error:', error);
+};</code></pre>
+
+            <hr>
+
+            <h2 id="smart-contract-integration">🔗 Smart Contract Integration</h2>
+            <h3>Contract Addresses</h3>
+            <ul>
+                <li><strong>Vault Contract:</strong> <code>0x49B0f9a0554da1A7243A9C8ac5B45245A66D90ff</code></li>
+                <li><strong>Oracle Contract:</strong> <code>0x6e5da6d7a89c6B7cB0e5c64fcf326292F76A0352</code></li>
+            </ul>
+
+            <h3>Vault Contract ABI</h3>
+            <pre><code>[
+  {
+    "inputs": [
+      {"internalType": "address", "name": "_tokenIn", "type": "address"},
+      {"internalType": "address", "name": "_tokenOut", "type": "address"},
+      {"internalType": "uint256", "name": "_amountIn", "type": "uint256"},
+      {"internalType": "uint256", "name": "_minAmountOut", "type": "uint256"}
+    ],
+    "name": "swapExactTokensForTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "user", "type": "address"},
+      {"indexed": true, "internalType": "address", "name": "tokenIn", "type": "address"},
+      {"indexed": true, "internalType": "address", "name": "tokenOut", "type": "address"},
+      {"indexed": false, "internalType": "uint256", "name": "amountIn", "type": "uint256"},
+      {"indexed": false, "internalType": "uint256", "name": "amountOut", "type": "uint256"}
+    ],
+    "name": "Swap",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "SWAP_FEE_BPS",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "BPS_DENOMINATOR", 
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]</code></pre>
+
+            <h3>Swap Implementation Example</h3>
+            <pre><code>import { ethers } from 'ethers';
+
+const VAULT_ADDRESS = '0x49B0f9a0554da1A7243A9C8ac5B45245A66D90ff';
+const VAULT_ABI = [/* ABI from above */];
+
+async function executeSwap(tokenIn, tokenOut, amountIn, minAmountOut) {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const vaultContract = new ethers.Contract(VAULT_ADDRESS, VAULT_ABI, signer);
+
+  try {
+    const tokenContract = new ethers.Contract(tokenIn, ERC20_ABI, signer);
+    const approveTx = await tokenContract.approve(VAULT_ADDRESS, amountIn);
+    await approveTx.wait();
+
+    const swapTx = await vaultContract.swapExactTokensForTokens(
+      tokenIn, tokenOut, amountIn, minAmountOut
+    );
+    
+    const receipt = await swapTx.wait();
+    return receipt;
+  } catch (error) {
+    console.error('Swap failed:', error);
+    throw error;
+  }
+}</code></pre>
+
+            <h3>Fee Calculation</h3>
+            <pre><code>// Get fee rate from contract
+const swapFeeBps = await vaultContract.SWAP_FEE_BPS(); // Returns 30
+const bpsDenominator = await vaultContract.BPS_DENOMINATOR(); // Returns 10000
+
+// Calculate fee
+const fee = (amountIn * swapFeeBps) / bpsDenominator;
+const amountAfterFee = amountIn - fee;</code></pre>
+
+            <hr>
+            
+            <h2 id="supported-tokens">🪙 Supported Tokens</h2>
+            <div class="docs-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Decimals</th>
+                            <th>CoinGecko ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>WBTC</td><td>Wrapped Bitcoin</td><td><code>0x964...c419</code></td><td>8</td><td>wrapped-bitcoin</td></tr>
+                        <tr><td>wstETH</td><td>Wrapped stETH</td><td><code>0xeb2...188</code></td><td>18</td><td>wrapped-steth</td></tr>
+                        <tr><td>WETH</td><td>Wrapped Ethereum</td><td><code>0xd0c...da7</code></td><td>18</td><td>weth</td></tr>
+                        <tr><td>BNB</td><td>Binance Coin</td><td><code>0xb94...08e</code></td><td>18</td><td>binancecoin</td></tr>
+                        <tr><td>UNI</td><td>Uniswap</td><td><code>0x90a...e84</code></td><td>18</td><td>uniswap</td></tr>
+                        <tr><td>DOT</td><td>Polkadot</td><td><code>0xdcc...cd3</code></td><td>10</td><td>polkadot</td></tr>
+                        <tr><td>TON</td><td>The Open Network</td><td><code>0x9d6...f02</code></td><td>9</td><td>the-open-network</td></tr>
+                        <tr><td>CRO</td><td>Crypto.com Chain</td><td><code>0xa19...061</code></td><td>8</td><td>crypto-com-chain</td></tr>
+                        <tr><td>stETH</td><td>Lido Staked Ether</td><td><code>0xbbf...34e</code></td><td>18</td><td>staked-ether</td></tr>
+                        <tr><td>USDT</td><td>Tether USD</td><td><code>0x2a4...660</code></td><td>6</td><td>tether</td></tr>
+                        <tr><td>SOL</td><td>Solana</td><td><code>0x710...2a</code></td><td>9</td><td>solana</td></tr>
+                        <tr><td>USDC</td><td>USD Coin</td><td><code>0x29e...5a</code></td><td>6</td><td>usd-coin</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <h2 id="error-handling">🚨 Error Handling</h2>
+            <h3>Standard Error Response Format</h3>
+            <pre><code>{
+  "success": false,
+  "message": "Error description",
+  "error": "Detailed error information",
+  "timestamp": 1693234567890
+}</code></pre>
+            <h3>Common Error Codes</h3>
+            <div class="docs-table">
+                <table>
+                    <thead><tr><th>HTTP Code</th><th>Description</th><th>Cause</th></tr></thead>
+                    <tbody>
+                        <tr><td>400</td><td>Bad Request</td><td>Invalid parameters or malformed request</td></tr>
+                        <tr><td>404</td><td>Not Found</td><td>Endpoint or resource not found</td></tr>
+                        <tr><td>429</td><td>Too Many Requests</td><td>Rate limit exceeded</td></tr>
+                        <tr><td>500</td><td>Internal Server Error</td><td>Server-side error</td></tr>
+                        <tr><td>503</td><td>Service Unavailable</td><td>Service temporarily down</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <h2 id="rate-limits">⚡ Rate Limits</h2>
+            <ul>
+                <li><strong>REST API:</strong> 100 requests per minute per IP</li>
+                <li><strong>WebSocket:</strong> No rate limits on connections, but message throttling may apply</li>
+                <li><strong>Cached Data:</strong> API responses include cache information to help optimize requests</li>
+            </ul>
+            <h3>Rate Limit Headers</h3>
+            <pre><code>X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1693234567</code></pre>
+
+            <hr>
+
+            <h2 id="integration-examples">🛠️ Integration Examples</h2>
+            <h3>React Hook for Price Data</h3>
+            <pre><code>import { useState, useEffect } from 'react';
+
+export const usePaxDexPrices = () => {
+  const [prices, setPrices] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch initial prices then connect to WebSocket for real-time updates
+  }, []);
+
+  return { prices, loading };
+};</code></pre>
+            
+            <hr>
+
+            <h2 id="quick-reference">📚 Quick Reference</h2>
+            <h3>Essential URLs</h3>
+            <ul>
+                <li><strong>API Base:</strong> <code>https://dex-api.paxeer.app</code></li>
+                <li><strong>WebSocket:</strong> <code>wss://dex-api.paxeer.app:3001</code></li>
+                <li><strong>Vault Contract:</strong> <code>0x49B0f9a0554da1A7243A9C8ac5B45245A66D90ff</code></li>
+            </ul>
+            <h3>Key Endpoints</h3>
+            <ul>
+                <li><strong>Prices:</strong> <code>/api/prices</code></li>
+                <li><strong>Swap Data:</strong> <code>/api/tokens/swap</code></li>
+                <li><strong>Health Check:</strong> <code>/api/health</code></li>
+            </ul>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Paxeer Network. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
+

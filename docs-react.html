@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Integration Guide - Paxeer Network</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <header>
+        <div class="logo">
+            <a href="index.html">PAXEER</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="developers.html" data-hover>Developers</a></li>
+                <li><a href="ecosystem.html" data-hover>Ecosystem</a></li>
+                <li><a href="token.html" data-hover>Token</a></li>
+                <li><a href="docs.html" data-hover>Docs</a></li>
+                <li><a href="community.html" data-hover>Community</a></li>
+                <li><a href="about.html" data-hover>About</a></li>
+            </ul>
+        </nav>
+        <div class="header-button">
+            <button class="btn btn-primary" data-hover>Launch App</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Docs Hero Section -->
+        <section class="hero" id="docs-hero">
+            <div class="hero-content anim-fade-in">
+                <h1>Complete React<br><span class="accent-text">Integration Guide.</span></h1>
+                <p>A full walkthrough of setting up a React application to interact with the Paxeer protocol, including hooks, components, and styling.</p>
+            </div>
+        </section>
+
+        <section id="docs-content" class="anim-fade-in">
+            <h2 id="project-setup">🏗️ Project Setup</h2>
+            <h3>Install Dependencies</h3>
+            <pre><code>npm install ethers @web3-react/core @web3-react/injected-connector
+npm install recharts axios socket.io-client
+npm install @types/node # if using TypeScript</code></pre>
+            
+            <h3>Environment Variables (.env)</h3>
+            <pre><code>REACT_APP_API_BASE_URL=https://launch-api.paxeer.app/api/v1
+REACT_APP_WS_URL=wss://launch-api.paxeer.app
+REACT_APP_FACTORY_ADDRESS=0xDE63a33db52EfAf44f28e6d99406874Cffe5820C
+REACT_APP_ROUTER_ADDRESS=0xFAc155Aa5bdcAA5F7931fF581C7fF01eeB00C667
+REACT_APP_USDC_ADDRESS=0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85
+REACT_APP_CHAIN_ID=80000</code></pre>
+            
+            <hr>
+            
+            <h2 id="web3-context">🔗 Web3 Context Provider</h2>
+            <p>Create a file at <code>contexts/Web3Context.js</code> to manage wallet connection state globally.</p>
+            <pre><code>import React, { createContext, useContext, useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+
+const Web3Context = createContext();
+
+export const useWeb3 = () => {
+  const context = useContext(Web3Context);
+  if (!context) {
+    throw new Error('useWeb3 must be used within Web3Provider');
+  }
+  return context;
+};
+
+export const Web3Provider = ({ children }) => {
+  const [provider, setProvider] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [account, setAccount] = useState(null);
+  const [chainId, setChainId] = useState(null);
+  const [connected, setConnected] = useState(false);
+
+  const connectWallet = async () => {
+    // ... connection logic
+  };
+
+  const switchNetwork = async () => {
+    // ... switch/add network logic
+  };
+
+  const disconnectWallet = () => {
+    // ... disconnect logic
+  };
+
+  useEffect(() => {
+    // ... auto-connect and event listener logic
+  }, []);
+
+  const value = { provider, signer, account, chainId, connected, connectWallet, disconnectWallet, switchNetwork };
+
+  return &lt;Web3Context.Provider value={value}&gt;{children}&lt;/Web3Context.Provider&gt;;
+};</code></pre>
+
+            <hr>
+
+            <h2 id="websocket-hook">🔌 WebSocket Hook</h2>
+            <p>Create a custom hook at <code>hooks/useWebSocket.js</code> for real-time data with auto-reconnection.</p>
+            <pre><code>import { useState, useEffect, useRef, useCallback } from 'react';
+
+const useWebSocket = (url) => {
+  const [data, setData] = useState(null);
+  const [connected, setConnected] = useState(false);
+  const ws = useRef(null);
+
+  const connect = useCallback(() => {
+    ws.current = new WebSocket(url);
+    ws.current.onopen = () => setConnected(true);
+    ws.current.onmessage = (event) => setData(JSON.parse(event.data));
+    // ... add reconnection logic for onclose
+  }, [url]);
+
+  useEffect(() => {
+    connect();
+    return () => ws.current?.close();
+  }, [connect]);
+  
+  return { data, connected };
+};
+
+export default useWebSocket;</code></pre>
+
+            <hr>
+            
+            <h2 id="pool-hooks">📊 Pool Data Hooks</h2>
+            <p>Create hooks at g>hooks/usePools.js</strong> to fetch pool data from the API.</p>
+            <pre><code>import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
+
+export const usePools = () => {
+  const [pools, setPools] = useState([]);
+  // ... fetching logic for all pools
+  return { pools, loading, error };
+};
+
+export const usePool = (poolAddress) => {
+  const [pool, setPool] = useState(null);
+  // ... fetching logic for a single pool
+  return { pool, loading, error };
+};</code></pre>
+
+            <hr>
+
+            <h2 id="trading-component">💱 Trading Component</h2>
+            <p>Build a trading interface at <code>components/TradingInterface.jsx</code>.</p>
+            <pre><code>import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+import { useWeb3 } from '../contexts/Web3Context';
+
+const TradingInterface = ({ pool }) => {
+  const { signer, account } = useWeb3();
+  const [buyAmount, setBuyAmount] = useState('');
+  const [balances, setBalances] = useState({ usdc: '0', token: '0' });
+
+  // ... logic to fetch balances, get quotes, and execute trades
+  
+  return (
+    &lt;div className="trading-interface"&gt;
+      {/* Buy and Sell cards with inputs and buttons */}
+    &lt;/div&gt;
+  );
+};
+
+export default TradingInterface;</code></pre>
+
+            <hr>
+
+            <h2 id="chart-component">📈 Price Chart Component</h2>
+            <p>Build a reusable price chart at <code>components/PriceChart.jsx</code> using Recharts.</p>
+            <pre><code>import React, { useState, useEffect } from 'react';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import axios from 'axios';
+
+const PriceChart = ({ poolAddress }) => {
+  const [chartData, setChartData] = useState([]);
+  
+  // ... logic to fetch historical data and update with WebSocket
+  
+  return (
+    &lt;ResponsiveContainer width="100%" height={400}&gt;
+      &lt;LineChart data={chartData}&gt;
+        {/* Chart components */}
+      &lt;/LineChart&gt;
+    &lt;/ResponsiveContainer&gt;
+  );
+};
+
+export default PriceChart;</code></pre>
+
+            <hr>
+
+            <h2 id="app-integration">📱 Main App Integration</h2>
+            <p>Combine all elements in your main <code>App.js</code> file.</p>
+            <pre><code>import React from 'react';
+import { Web3Provider } from './contexts/Web3Context';
+import { usePools } from './hooks/usePools';
+import TradingInterface from './components/TradingInterface';
+import PriceChart from './components/PriceChart';
+
+function App() {
+  const { pools, loading, error } = usePools();
+
+  return (
+    &lt;Web3Provider&gt;
+      &lt;div className="App"&gt;
+        &lt;header&gt;
+          &lt;h1&gt;Paxeer Protocol&lt;/h1&gt;
+          {/* Wallet Connection Component */}
+        &lt;/header&gt;
+        &lt;main&gt;
+          {pools.map(pool => (
+            &lt;div key={pool.pool_address} className="pool-card"&gt;
+              &lt;h2&gt;{pool.token_symbol}&lt;/h2&gt;
+              &lt;PriceChart poolAddress={pool.pool_address} /&gt;
+              &lt;TradingInterface pool={pool} /&gt;
+            &lt;/div&gt;
+          ))}
+        &lt;/main&gt;
+      &lt;/div&gt;
+    &lt;/Web3Provider&gt;
+  );
+}
+
+export default App;</code></pre>
+
+            <hr>
+
+            <h2 id="styling">🎨 Basic Styling (App.css)</h2>
+            <p>Add some basic styles to make the application usable.</p>
+            <pre><code>.pool-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+.trading-interface {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.buy-button {
+  background: #10b981;
+  color: white;
+}
+
+.sell-button {
+  background: #ef4444;
+  color: white;
+}</code></pre>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Paxeer Network. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
+

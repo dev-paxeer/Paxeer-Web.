@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaxLend Protocol Guide - Paxeer Network</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <header>
+        <div class="logo">
+            <a href="index.html">PAXEER</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="developers.html" data-hover>Developers</a></li>
+                <li><a href="ecosystem.html" data-hover>Ecosystem</a></li>
+                <li><a href="token.html" data-hover>Token</a></li>
+                <li><a href="docs.html" data-hover>Docs</a></li>
+                <li><a href="community.html" data-hover>Community</a></li>
+                <li><a href="about.html" data-hover>About</a></li>
+            </ul>
+        </nav>
+        <div class="header-button">
+            <button class="btn btn-primary" data-hover>Launch App</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Docs Hero Section -->
+        <section class="hero" id="docs-hero">
+            <div class="hero-content anim-fade-in">
+                <h1>PaxLend Protocol<br><span class="accent-text">Frontend Integration Guide.</span></h1>
+                <p>A comprehensive guide for integrating the PaxLend Protocol API, covering vaults, user credit, and protocol statistics.</p>
+            </div>
+        </section>
+
+        <section id="docs-content" class="anim-fade-in">
+            <h2 id="base-api-url">🌐 Base API URL</h2>
+            <pre><code>https://lending-api.paxeer.app</code></pre>
+
+            <hr>
+
+            <h2 id="overview">📝 Overview</h2>
+            <p>This document provides comprehensive API documentation for integrating PaxLend Protocol. The API provides real-time vault data, user credit scoring, and lending protocol statistics.</p>
+            <h3>Authentication</h3>
+            <p>All endpoints are currently public and do not require authentication.</p>
+            <h3>Response & Error Format</h3>
+            <p>All successful API responses are wrapped in a standard format. Errors will return a `detail` and `status_code`.</p>
+            <pre><code>// Success
+{
+  "data": {...},
+  "timestamp": "2025-08-28T07:43:55Z",
+  "status": "success"
+}
+
+// Error
+{
+  "detail": "Error message",
+  "status_code": 400
+}</code></pre>
+
+            <hr>
+
+            <h2 id="vault-endpoints">🏦 VAULT ENDPOINTS</h2>
+            <h3>1. Get All Vaults</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/v1/vaults</code></p>
+            <p>Perfect for building token selector dropdowns and vault overview pages.</p>
+            <pre><code>// Response Example
+{
+  "vaults": [
+    {
+      "id": "vault_wpax",
+      "name": "Wrapped Paxeer Vault",
+      "symbol": "WPAX",
+      "total_deposited_usd": "$51,875.82",
+      "supply_rate": "4.28%",
+      "borrow_rate": "16.78%",
+      ...
+    }
+  ],
+  "total_value_locked": "$2,847,293.42"
+}</code></pre>
+            <h4>Frontend Implementation:</h4>
+            <pre><code>async function fetchVaults() {
+  const response = await fetch('https://lending-api.paxeer.app/api/v1/vaults');
+  const data = await response.json();
+  return data.vaults;
+}</code></pre>
+            
+            <h3>2. Get Specific Vault Details</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/v1/vaults/{vault_id}</code></p>
+            <pre><code>// Response Example for vault_wbtc
+{
+  "vault": {
+    "id": "vault_wbtc",
+    "market_info": { "price": "$111,720.0000", ... },
+    "vault_metrics": { "total_supplied_usd": "$1,452,360.00", ... },
+    "interest_rates": { "supply_apy": "1.04%", "borrow_apy": "7.00%" },
+    "risk_parameters": { "max_ltv": "75%", ... }
+  }
+}</code></pre>
+
+            <hr>
+
+            <h2 id="user-endpoints">👤 USER ENDPOINTS</h2>
+            <h3>1. Get User Credit Score and Borrowing Capacity</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/v1/user/{address}/credit</code></p>
+            <pre><code>{
+  "address": "0x2fccd991Ecc9bEe62Bd10d751A5c5492e2a788C7",
+  "credit_score": 847,
+  "credit_grade": "Excellent",
+  "max_borrow_capacity_usd": 2847293.42,
+  "risk_level": "Low",
+  "score_breakdown": { ... }
+}</code></pre>
+
+            <h3>2. Get Whale Addresses</h3>
+            <p><strong>Endpoint:</strong> <code>GET /api/v1/users/whales?min_balance=1000000</code></p>
+            
+            <hr>
+
+            <h2 id="protocol-stats">📊 PROTOCOL STATISTICS</h2>
+            <p><strong>Endpoint:</strong> <code>GET /api/v1/protocol/stats</code></p>
+            <pre><code>{
+  "total_users": 156,
+  "total_deposits_usd": 2847293.42,
+  "total_borrows_usd": 854188.03,
+  "avg_credit_score": 627.8
+}</code></pre>
+
+            <hr>
+            
+            <h2 id="system-endpoints">🔧 SYSTEM ENDPOINTS</h2>
+            <h3>1. Health Check</h3>
+            <p><strong>Endpoint:</strong> <code>GET /health</code></p>
+            
+            <h3>2. Manual Data Refresh</h3>
+            <p><strong>Endpoints:</strong> <code>POST /api/v1/vault/refresh</code>, <code>POST /api/v1/system/refresh-scores</code></p>
+
+            <hr>
+            
+            <h2 id="implementation-patterns">🎨 FRONTEND IMPLEMENTATION PATTERNS</h2>
+            <h3>Complete Vault Dashboard Component Example</h3>
+            <pre><code>import React, { useState, useEffect } from 'react';
+
+function VaultDashboard() {
+  const [vaults, setVaults] = useState([]);
+  const [protocolStats, setProtocolStats] = useState(null);
+  
+  useEffect(() => {
+    // Fetch all required data using Promise.all
+    // e.g., fetch('/api/v1/vaults'), fetch('/api/v1/protocol/stats')
+  }, []);
+
+  return (
+    &lt;div className="vault-dashboard"&gt;
+      {/* Protocol Overview, Vault Selection, Details, etc. */}
+    &lt;/div&gt;
+  );
+}</code></pre>
+            
+            <h3>Performance: Caching & Batching</h3>
+            <p>Implement a simple client-side cache to reduce redundant API calls and use `Promise.all` to fetch initial dashboard data concurrently for optimal performance.</p>
+            <pre><code>const fetchDashboardData = async (userAddress) => {
+  const [vaults, stats, credit] = await Promise.all([
+    fetch('/api/v1/vaults'),
+    fetch('/api/v1/protocol/stats'),
+    fetch(`/api/v1/user/${userAddress}/credit`)
+  ]);
+  return { vaults, stats, credit };
+};</code></pre>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Paxeer Network. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
+
