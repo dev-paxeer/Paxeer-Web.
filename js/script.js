@@ -52,6 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Cookie Consent Banner ---
     initCookieBanner();
 
+    // Add CTM link to nav if missing
+    const navUL = document.querySelector('header nav ul');
+    if(navUL && !navUL.querySelector('.nav-ctm')){
+        const li = document.createElement('li');
+        li.innerHTML = '<a href="ctm.html" class="nav-ctm" data-hover>CTM</a>';
+        navUL.insertBefore(li, navUL.children[3] || null);
+    }
+
     // --- Footer Links ---
     initFooterLinks();
 

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computable Token Machine (CTM) - Paxeer Network</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+  <header>
+    <div class="logo"><a href="index.html">PAXEER</a></div>
+    <nav>
+      <ul>
+        <li><a href="developers.html" data-hover>Developers</a></li>
+        <li><a href="ecosystem.html" data-hover>Ecosystem</a></li>
+        <li><a href="token.html" data-hover>Token</a></li>
+        <li><a href="ctm.html" class="nav-ctm" data-hover>CTM</a></li>
+        <li><a href="docs.html" data-hover>Docs</a></li>
+        <li><a href="community.html" data-hover>Community</a></li>
+        <li><a href="about.html" data-hover>About</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" id="ctm-hero">
+      <div class="hero-content anim-fade-in">
+        <h1>Computable Token <span class="accent-text">Machine</span></h1>
+        <p>Beyond value, beyond utility – tokens that <b>think</b>. Discover Paxeer's groundbreaking CTM standard.</p>
+      </div>
+    </section>
+
+    <!-- CTM Content (converted from README) -->
+    <section class="cta-section anim-fade-in" style="max-width:900px;margin:auto;">
+      <article class="markdown-body" style="line-height:1.7">
+        <h2>1. Introduction</h2>
+        <p><strong>Beyond Value, Beyond Utility. Tokens That Think.</strong></p>
+        <p>Traditional tokens are passive assets. The Computable Token Machine (CTM) introduces a third dimension: <em>computation</em>. Each CTM token is a modular execution environment capable of running its own applications, managing state, and evolving functionality over time.</p>
+        <hr/>
+        <h2>2. Core Concepts</h2>
+        <h3>What is a CTM?</h3>
+        <p>A CTM combines a standard token interface with the upgradeable <strong>Diamond Standard (EIP-2535)</strong>, giving it two personas:</p>
+        <ol>
+          <li><b>The Token</b>: behaves like ERC-20 for transfers & integrations.</li>
+          <li><b>The Machine</b>: routes calls to modular <i>Programs</i> (facets) that can be added, replaced, or removed post-deployment.</li>
+        </ol>
+        <h3>Key Features</h3>
+        <ul>
+          <li><b>Infinite Extensibility</b> – ship new functionality anytime.</li>
+          <li><b>Shared State</b> – seamless interaction between Programs.</li>
+          <li><b>Gas Efficiency</b> – bypass contract-size limits via modular code.</li>
+          <li><b>True On-Chain Autonomy</b> – create complex agents that self-manage assets & logic.</li>
+        </ul>
+        <hr/>
+        <h2>3. Deploy Your First CTM</h2>
+        <pre><code>$ git clone https://github.com/dev-paxeer/Computable-Token-Machine-v1.0.0
+$ cd Computable-Token-Machine-v1.0.0
+$ npm install
+$ npx hardhat run scripts/deploy.js --network &lt;network&gt;</code></pre>
+        <p>The script deploys the proxy <code>TokenVM.sol</code> and standard facets, returning the permanent CTM address.</p>
+        <hr/>
+        <h2>4. Creating CTM Programs</h2>
+        <p>Programs are stateless Solidity contracts that live inside the CTM. Example snippet:</p>
+        <pre><code class="language-solidity">// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import {ERC20Facet} from "./ERC20Facet.sol";
+
+contract VotingProgram {
+  struct VotingStorage { mapping(uint => string) proposals; }
+  bytes32 constant SLOT = keccak256("ctm.voting");
+  // ...
+}</code></pre>
+        <hr/>
+        <h2>5. Resources</h2>
+        <ul>
+          <li><a href="https://github.com/dev-paxeer/Computable-Token-Machine-v1.0.0" target="_blank">Full Source Code</a></li>
+          <li><a href="https://paxscan.paxeer.app/address/0x477A9f214c947e6D81b9d32b6b1883F4a4ffFb24" target="_blank">Live Contracts</a></li>
+          <li><a href="https://paxeer.app/developers" target="_blank">Developer Community</a></li>
+        </ul>
+      </article>
+    </section>
+  </main>
+  <footer><p>&copy; 2025 Paxeer Network. All rights reserved.</p></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
