@@ -232,6 +232,17 @@ body.loading {
     animation: forceShow 6s forwards;
 }
 
+/* Modern Block Pulse Animation */
+.block:not(.explode){
+    border-radius:10px;
+    animation:blockPulse 6s ease-in-out infinite;
+}
+@keyframes blockPulse{
+    0%{transform:translateZ(0) scale(1);}
+    50%{transform:translateZ(20px) scale(1.1);} 
+    100%{transform:translateZ(0) scale(1);} 
+}
+
 @keyframes forceShow {
     0%, 95% {
         /* Keep loading state */
@@ -264,7 +275,7 @@ body.loading main {
 .showcase-sticky { display: flex; justify-content: center; align-items: center; height: 100%; }
 .glass-cube { width: 280px; height: 280px; position: relative; transform-style: preserve-3d; transform: perspective(1000px) rotateX(-20deg) rotateY(-30deg); }
 .glass-cube-face {
-    position: absolute; width: 100%; height: 100%; border: 2px solid var(--color-primary);
+    position: absolute; width: 100%; height: 100%; border: 2px solid #000; box-shadow: 0 0 20px #35b7ff;
     background: var(--color-primary); backdrop-filter: blur(10px); color: #000000;
     font-size: 1.5rem; display: flex; justify-content: center; align-items: center; font-weight: 700; text-align: center; padding: 1rem;
 }
