@@ -2,12 +2,14 @@
 
 /* --- Basic Setup & Variables --- */
 :root {
-    --color-background: #000000;
+    --color-background: #121212; /* From OCF */
     --color-text: #e0e0e0;
-    --color-primary: #35b7ff; /* Vibrant Lime Green */
+    --color-primary: #35b7ff; /* Keeping original primary for brand consistency */
+    --color-secondary: #CCFF00; /* From v0 */
+    --color-accent: #f97316; /* From OCF */
     --color-muted: #a0a0a0;
     --color-border: rgba(255, 255, 255, 0.1);
-    --font-main: 'Space Grotesk', sans-serif;
+    --font-main: 'Inter', sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -500,12 +502,72 @@ body.loading main {
     background-color: rgba(255,255,255,0.05);
 }
 
+/* --- Modern Design Updates --- */
+/* Color scheme inspired by v0-modern-saa-s-landing-page and OCF */
+:root {
+    --color-secondary: #CCFF00; /* From v0 */
+    --color-accent: #f97316; /* From OCF */
+}
 
-.mobile-menu-btn { display: none; cursor: pointer; }
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
 
-/* Responsive Adjustments */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Glassmorphism cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+}
+
+/* Modern buttons */
+.btn-modern {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: 600;
+    padding: 12px 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn-modern:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+
+/* Hover effects */
+.hover-lift {
+    transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+/* Mobile Navigation */
 @media (max-width: 900px) {
-    /* Mobile Navigation */
     header nav {
         position: fixed;
         top: 0;
